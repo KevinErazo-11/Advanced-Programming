@@ -19,23 +19,24 @@
  const std::string COURSES_OFFERED_PATH = "student_output/courses_offered.csv";
  const std::string COURSES_NOT_OFFERED_PATH = "student_output/courses_not_offered.csv";
  
- /**
-  * Represents a course a student can take in ExploreCourses.
-  * Definimos los campos: title, number_of_units y quarter, todos de tipo std::string.
-  */
+/**
+ * Represents a course a student can take in ExploreCourses.
+ * You must fill in the types of the fields in this struct.
+ * Hint: Remember what types C++ streams work with?!
+ */
  struct Course {
    std::string title;
    std::string number_of_units;
    std::string quarter;
  };
  
- /**
-  * Actualizamos las firmas de las funciones para pasar el vector por referencia.
-  *
-  * parse_csv: se encarga de llenar el vector de cursos (por ello se pasa por referencia).
-  * write_courses_offered: escribe y elimina de 'courses' los cursos que están ofrecidos.
-  * write_courses_not_offered: escribe los cursos no ofrecidos (se pasa como const referencia ya que solo se lee).
-  */
+/**
+ * (STUDENT TODO) Look at how the main function (at the bottom of this file)
+ * calls `parse_csv`, `write_courses_offered`, and `write_courses_not_offered`.
+ * Modify the signatures of these functions so that they work as intended, and then delete this
+ * comment!
+ */
+
  void parse_csv(const std::string &filename, std::vector<Course>& courses);
  void write_courses_offered(std::vector<Course>& courses);
  void write_courses_not_offered(const std::vector<Course>& courses);
@@ -48,37 +49,38 @@
   */
  #include "utils.cpp"
  
- /**
-  * This function should populate the `courses` vector with structs of type
-  * `Course`. We want to create these structs with the records in the courses.csv
-  * file, where each line is a record!
-  *
-  * Hints:
-  * 1) Take a look at the split function we provide in utils.cpp
-  * 2) Each LINE is a record! *this is important, so we're saying it again :>)*  
-  * 3) The first line in the CSV defines the column names, so you can ignore it!
-  *
-  * @param filename The name of the file to parse.
-  * @param courses  A vector of courses to populate.
-  */
+/**
+ * This function should populate the `courses` vector with structs of type
+ * `Course`. We want to create these structs with the records in the courses.csv
+ * file, where each line is a record!
+ *
+ * Hints:
+ * 1) Take a look at the split function we provide in utils.cpp
+ * 2) Each LINE is a record! *this is important, so we're saying it again :>)*
+ * 3) The first line in the CSV defines the column names, so you can ignore it!
+ *
+ * @param filename The name of the file to parse.
+ * @param courses  A vector of courses to populate.
+ */
+
  void parse_csv(const std::string &filename, std::vector<Course>& courses) {
+     /* (STUDENT TODO) Your code goes here... */
      std::ifstream file(filename);
      std::string line;
  
-     // Salta la primera línea (encabezado)
+  
      std::getline(file, line);
  
      while (std::getline(file, line)) {
-         // Dividimos la línea en tres partes: título, número de unidades y trimestre
-         std::vector<std::string> tokens = split(line, ','); // Utilizamos la función split para separar la línea
+
+         std::vector<std::string> tokens = split(line, ','); 
  
-         if (tokens.size() == 3) { // Asegurarse de que hay tres elementos
+         if (tokens.size() == 3) { 
              Course c;
              c.title = tokens[0];
              c.number_of_units = tokens[1];
              c.quarter = tokens[2];
- 
-             // Añadir el curso al vector
+
              courses.push_back(c);
          }
      }
@@ -104,21 +106,18 @@
   */
  void write_courses_offered(std::vector<Course>& courses) {
      std::ofstream file(COURSES_OFFERED_PATH);
-     
-     // Escribimos el encabezado
+   
      file << "Title,Number of Units,Quarter" << std::endl;
  
-     // Usamos un vector auxiliar para almacenar cursos a eliminar
      std::vector<Course> offered_courses;
  
-     // Iteramos sobre los cursos y seleccionamos los ofrecidos
      for (auto it = courses.begin(); it != courses.end(); ) {
-         if (it->quarter != "null") { // Si el curso está ofrecido
+         if (it->quarter != "null") { 
              file << it->title << "," << it->number_of_units << "," << it->quarter << std::endl;
              offered_courses.push_back(*it);
-             it = courses.erase(it); // Eliminar curso de courses
+             it = courses.erase(it); 
          } else {
-             ++it; // Continuar al siguiente curso
+             ++it; 
          }
      }
  }
@@ -139,10 +138,8 @@
  void write_courses_not_offered(const std::vector<Course>& courses) {
      std::ofstream file(COURSES_NOT_OFFERED_PATH);
      
-     // Escribimos el encabezado
      file << "Title,Number of Units,Quarter" << std::endl;
  
-     // Iteramos sobre los cursos no ofrecidos
      for (const auto& c : courses) {
          file << c.title << "," << c.number_of_units << "," << c.quarter << std::endl;
      }
@@ -150,7 +147,7 @@
  
 
  int main() {
-  // Verificación sencilla de la estructura
+  
   if (std::string().empty() || std::string().empty() || std::string().empty()) {
     std::cerr << "Course struct is not correctly defined!" << std::endl;
     return 1;  // Terminar si la estructura no está bien definida
