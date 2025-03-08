@@ -1,18 +1,18 @@
 #include <iostream>
 #include <tuple>
 #include <string>
+#include <cstdio>  
 
-//Structured Binding (C++ 17)
-std::tuple<std::string, std::string, std::string> getClassInfo(){
-    std::string className = "I am " ;
-    std::string buildingName = "using " ;
+// Structured Binding (C++17)
+std::tuple<std::string, std::string, std::string> getClassInfo() {
+    std::string className = "I am ";
+    std::string buildingName = "using ";
     std::string finish = "Structured Binding (C++ 17).";
     return {className, buildingName, finish};
 }
 
-
-int main(){
-    //initial values
+int main() {
+    // Initial values
     int numOne = 11;
     double numTwo{11.1};
     std::string myString = "This is my string.";
@@ -27,7 +27,7 @@ int main(){
 
     printf("--------------------------------------------------------\n");
 
-    //Declare a reference to a and use it to modify the value of the previously created variables.
+    // Declare a reference to a and use it to modify the value of the previously created variables.
     printf("Part 3: References\n");
     int& ref = numOne;
     ref = 10; // Assigning a new value through the reference
@@ -41,26 +41,5 @@ int main(){
 
     bool& ref2 = myBool;
     ref2 = false;
-    printf("I assign false to ref2, we also change the value of myBool (true)\n");
-    std::cout << "\tPrint the values again to confirm changes: " << ref2 << std::endl;
-
-    printf("--------------------------------------------------------\n");
-
-
-    //Part 4: Structured Binding
-    auto [className, buildingName, finish] = getClassInfo();
-    std::cout << "Print the unpacked values:\n" << className << buildingName << finish << std::endl;
-    printf("--------------------------------------------------------\n");
-
-    //Part 5: Identifying l-values and r-values
-
-    a = 42; //l-value
-    int x = a + b; // a and b are l-values, (a + b) is an r-value
-    &a; // l-value
-    std::string s = c + " World"; // c is an l-value, "World" is an r-value, (c + " World") is an r-value
-    int& refX = x; // l-value reference
-    int&& rref = 100; // r-value reference
-
-    return 0;
+  
 }
-

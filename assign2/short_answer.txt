@@ -1,0 +1,35 @@
+Before submitting this file, make sure that there are no more TODO
+placeholders remaining in the file (and remove this comment too).
+
+Marriage Pact
+-------------
+
+Q1. It is your choice to use either an ordered or unordered set. In a few sentences, what are some of the tradeoffs between the two? Additionally, 
+please give an example (that has not been shown in lecture) of a valid hash function that could be used to hash student names for an unordered set.
+
+A1. std::set is an ordered set that stores the elements in order and offers a slower search complexity compared to std::unordered_set. This is 
+useful if we need to keep the names sorted automatically. On the other hand, std::unordered_set uses a hash table, providing an average lookup 
+time that can be more efficient when we only need to check for
+the existence of a name regardless of the order.
+
+An example hash function for names could be:
+struct NameHash {
+    std::size_t operator()(const std::string& name) const {
+        std::size_t hash_value = 0;
+        for (char c : name) {
+            hash_value = hash_value * 31 + c; 
+        }
+        return hash_value;
+    }
+};
+
+
+Q2. Note that we are saving pointers to names in the queue, not names themselves. Why might this be desired in this problem? What happens if the
+original set where the names are stored goes out of scope and the pointers are referenced?
+
+A2. Storing pointers in the std::queue instead of copying the full names reduces memory usage, since we avoid storing multiple copies of the same 
+strings. In large structures, this can be more efficient in terms of performance and storage. However, if the original set 
+(std::set<std::string> students) goes out of scope and is freed from memory, all pointers in the queue would be dangling pointers, meaning they
+would point to invalid memory locations. If an attempt were made to access them, this would result in an undefined behavior, which could cause 
+errors. undefined behavior, which could cause program errors or crashes.
+
