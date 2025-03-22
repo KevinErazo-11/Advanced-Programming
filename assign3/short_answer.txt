@@ -1,0 +1,17 @@
+Before submitting this file, make sure that there are no more TODO
+placeholders remaining in the file (and remove this comment too).
+
+Make a Class
+------------
+
+Q1. What’s const-correctness and why is it important?
+A1. Const-correctness ensures that functions do not modify the state 
+of an object when they are not supposed to. This helps prevent 
+unintended side effects, makes code easier to read and debug, and allows 
+for optimizations by the compiler.
+
+Q2. Is your class const-correct? How do you know?
+A2. Yes, the class is const-correct. The getter function `getSpeed()` is 
+marked as `const`, which ensures it does not modify the object’s state. Other
+functions modify the object only when necessary, maintaining proper 
+encapsulation and correctness.
