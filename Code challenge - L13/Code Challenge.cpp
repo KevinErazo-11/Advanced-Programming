@@ -130,11 +130,16 @@ void performance_test();
         Buffer b4(50);
         b4 = b2;                  // Should call copy assignment
         b4 = std::move(b2);       // Should call move assignment
-        performance_test();
+        return 0;
     }
 /*
 Questions: 
 • What constructors and assignments are called and when? 
+    During program execution, the constructor is called when b1 and b4 are created with a specific size. Then, the copy constructor
+    is called when making Buffer b2 = b1, since a new object is being created by copying an existing one. When doing 
+    Buffer b3 = std::move(b1), the move constructor is invoked, since b1 becomes an rvalue. Subsequently, when doing b4 = b2, the 
+    copy assignment operator is called, and when doing b4 = std::move(b2), the move assignment operator is invoked. Each specific call
+    allows us to observe how the different methods behave according to the type of operation being performed (copy or move).
     During program execution, the constructor is called when b1 and b4 are created with a specific size. Then, the copy constructor
     is called when making Buffer b2 = b1, since a new object is being created by copying an existing one. When doing 
     Buffer b3 = std::move(b1), the move constructor is invoked, since b1 becomes an rvalue. Subsequently, when doing b4 = b2, the 
@@ -146,7 +151,17 @@ Questions:
     In practice, this means that the source object's pointers point to nullptr and its size is zero. Although it is still a valid 
     object (it can be destroyed without error), its contents are no longer useful, so it should not be actively used after the 
     std::move.
+    After performing a move operation, the source object remains in a valid but undefined state. This means that its resources 
+    (e.g. dynamic memory in this case) have been transferred to the new object, and the source object no longer possesses them. 
+    In practice, this means that the source object's pointers point to nullptr and its size is zero. Although it is still a valid 
+    object (it can be destroyed without error), its contents are no longer useful, so it should not be actively used after the 
+    std::move.
 • What would happen if you didn’t define the move constructor/assignment?
+    If neither the move constructor nor the move assignment operator were defined, the compiler would use the copy constructors as an 
+    alternative even when using std::move. This would imply that instead of transferring resources, they would be copied, which is less 
+    efficient, especially with large objects or objects that handle expensive resources. Also, in some cases where the resource type 
+    cannot be safely copied (such as single pointers), the absence of move functions could cause compilation errors or undesired 
+    behavior.
     If neither the move constructor nor the move assignment operator were defined, the compiler would use the copy constructors as an 
     alternative even when using std::move. This would imply that instead of transferring resources, they would be copied, which is less 
     efficient, especially with large objects or objects that handle expensive resources. Also, in some cases where the resource type 
